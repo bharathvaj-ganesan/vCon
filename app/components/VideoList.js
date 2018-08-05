@@ -5,8 +5,7 @@ const VIDEO_FORMATS = [
   { value: 'm4v', option: 'M4V raw MPEG-4' },
   { value: 'mov', option: 'MOV / QuickTime' },
   { value: 'mp4', option: 'MP4 / QuickTime' },
-  { value: 'mpeg', option: 'MPEG' },
-  { value: 'ogv', option: 'OGV' }
+  { value: 'mpeg', option: 'MPEG' }
 ];
 
 const styles = {
@@ -73,9 +72,6 @@ export default class VideoList extends Component {
         </button>
       );
     }
-    // if (err) {
-    //   return <p className="red-text">{err}</p>;
-    // }
     return '';
   };
 
@@ -99,11 +95,17 @@ export default class VideoList extends Component {
         format,
         duration,
         converted,
-        outputPath
+        outputPath,
+        error
       } = video;
 
       return (
-        <li className="collection-item" key={path}>
+        <li
+          className={
+            error ? 'collection-item red white-text' : 'collection-item'
+          }
+          key={path}
+        >
           <span className="grey-text">{`${index + 1}.`}</span>
           <div
             style={{
@@ -122,6 +124,7 @@ export default class VideoList extends Component {
             <select
               className={converted ? 'hidden' : 'browser-default right'}
               value={format}
+              style={error ? { display: 'none' } : {}}
               onChange={e => this.props.onFormatChange(path, e.target.value)}
             >
               {VIDEO_FORMATS.map(outFormat => (
@@ -132,8 +135,12 @@ export default class VideoList extends Component {
             </select>
 
             <i
-              className="material-icons red-text right"
-              style={{ cursor: 'pointer' }}
+              className={
+                error
+                  ? 'material-icons white-text right'
+                  : 'material-icons red-text right'
+              }
+              style={{ cursor: 'pointer', margin: '1rem' }}
               onClick={() => this.props.removeVideo(path)}
             >
               delete

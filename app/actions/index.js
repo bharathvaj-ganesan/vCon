@@ -5,7 +5,8 @@ import {
   REMOVE_ALL_VIDEOS,
   VIDEO_COMPLETE,
   VIDEO_PROGRESS,
-  SET_FORMAT
+  SET_FORMAT,
+  CONVERTION_ERROR
 } from './types';
 
 export const addVideos = videos => (dispatch, getState) => {
@@ -52,22 +53,32 @@ export const showInFolder = (outputPath, videoPath) => {
 export const convertVideos = () => (dispatch, getState) => {
   const videos = getState().videos;
   const filterAlreadyConvertedVideos = videos.filter(
-    video => video.converted === false
+    video => video.converted === false && video.error === ''
   );
-  ipcRenderer.send('conversion:start', filterAlreadyConvertedVideos);
+  if (filterAlreadyConvertedVideos.length > 0) {
+    ipcRenderer.send('conversion:start', filterAlreadyConvertedVideos);
 
-  const dispatchVideoConvertOutputPath = (event, { videoPath, outputPath }) => {
-    ipcRenderer.removeListener(
-      'conversion:end',
-      dispatchVideoConvertOutputPath
-    );
-    dispatch({ type: VIDEO_COMPLETE, payload: { videoPath, outputPath } });
-  };
+    const dispatchVideoConvertOutputPath = (
+      event,
+      { videoPath, outputPath }
+    ) => {
+      ipcRenderer.removeListener(
+        'conversion:end',
+        dispatchVideoConvertOutputPath
+      );
+      dispatch({ type: VIDEO_COMPLETE, payload: { videoPath, outputPath } });
+    };
 
-  ipcRenderer.on('conversion:end', dispatchVideoConvertOutputPath);
-  ipcRenderer.on('conversion:progress', (event, { videoPath, timemark }) => {
-    dispatch({ type: VIDEO_PROGRESS, payload: { videoPath, timemark } });
-  });
+    ipcRenderer.on('conversion:end', dispatchVideoConvertOutputPath);
+
+    ipcRenderer.on('conversion:progress', (event, { videoPath, timemark }) => {
+      dispatch({ type: VIDEO_PROGRESS, payload: { videoPath, timemark } });
+    });
+
+    ipcRenderer.on('conversion:error', (event, { videoPath }) => {
+      dispatch({ type: CONVERTION_ERROR, payload: { videoPath } });
+    });
+  }
 };
 
 export const setFormat = (videoPath, format) => ({

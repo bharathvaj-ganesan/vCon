@@ -15,7 +15,8 @@ class VideoSelect extends Component {
         converted: false,
         duration: 0,
         timemark: 0,
-        outputPath: ''
+        outputPath: '',
+        error: ''
       };
     });
     console.log(filesSanitized);

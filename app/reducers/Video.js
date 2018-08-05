@@ -4,7 +4,8 @@ import {
   REMOVE_ALL_VIDEOS,
   VIDEO_COMPLETE,
   SET_FORMAT,
-  VIDEO_PROGRESS
+  VIDEO_PROGRESS,
+  CONVERTION_ERROR
 } from '../actions/types';
 
 const INITIAL_STATE = [];
@@ -47,6 +48,18 @@ export default function(state = INITIAL_STATE, action) {
           return {
             ...video,
             format,
+            converted: false
+          };
+        }
+        return video;
+      });
+    case CONVERTION_ERROR:
+      return state.map(video => {
+        const { format, videoPath } = action.payload;
+        if (video.path === videoPath) {
+          return {
+            ...video,
+            error: 'Cannor Convert video',
             converted: false
           };
         }

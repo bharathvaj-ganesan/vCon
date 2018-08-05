@@ -63,7 +63,7 @@ app.on('ready', async () => {
 
   mainWindow = new BrowserWindow({
     show: false,
-    width: 1200,
+    width: 500,
     height: 728
   });
 
@@ -133,7 +133,12 @@ ipcMain.on('conversion:start', (event, videos) => {
           videoPath: video.path,
           outputPath
         });
-      });
-    on('error', () => {}).run();
+      })
+      .on('error', () => {
+        mainWindow.webContents.send('conversion:error', {
+          videoPath: video.path
+        });
+      })
+      .run();
   });
 });
