@@ -11,15 +11,18 @@
  * @flow
  */
 import { app, BrowserWindow, ipcMain, shell } from 'electron';
+import ffmpegStatic from 'ffmpeg-static';
+import ffprobleStatic from 'ffprobe-static';
 import ffmpeg from 'fluent-ffmpeg';
+import { platform } from 'os';
 import MenuBuilder from './menu';
 
 let mainWindow = null;
 
-if (process.env.NODE_ENV === 'production') {
-  const sourceMapSupport = require('source-map-support');
-  sourceMapSupport.install();
-}
+// if (process.env.NODE_ENV === 'production') {
+//   const sourceMapSupport = require('source-map-support');
+//   sourceMapSupport.install();
+// }
 
 if (
   process.env.NODE_ENV === 'development' ||
@@ -60,6 +63,9 @@ app.on('ready', async () => {
   ) {
     await installExtensions();
   }
+
+  ffmpeg.setFfmpegPath(ffmpegStatic.path);
+  ffmpeg.setFfprobePath(ffprobleStatic.path);
 
   mainWindow = new BrowserWindow({
     show: false,
