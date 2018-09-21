@@ -4333,6 +4333,14 @@ fd-slicer@~1.0.1:
   dependencies:
     pend "~1.2.0"
 
+ffmpeg-static@^2.3.0:
+  version "2.3.0"
+  resolved "https://registry.yarnpkg.com/ffmpeg-static/-/ffmpeg-static-2.3.0.tgz#36976dc432a8df269c62aea705256bbd9fb66a94"
+
+ffprobe-static@^3.0.0:
+  version "3.0.0"
+  resolved "https://registry.yarnpkg.com/ffprobe-static/-/ffprobe-static-3.0.0.tgz#479689c8a237987beca5627968f3d87429bf569d"
+
 figures@^1.5.0, figures@^1.7.0:
   version "1.7.0"
   resolved "https://registry.yarnpkg.com/figures/-/figures-1.7.0.tgz#cbe1e3affcf1cd44b80cadfed28dc793a9701d2e"

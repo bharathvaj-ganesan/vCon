@@ -52,7 +52,7 @@ class VideoSelect extends Component {
           }
           return (
             <h5 className="drop-message grey-text">
-              Drag and drop some files on me, or click to select.
+              Drag and drop videos or click to choose.
             </h5>
           );
         }}

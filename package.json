@@ -197,6 +197,8 @@
     "@material-ui/lab": "3.0.0-alpha.15",
     "devtron": "1.4.0",
     "electron-debug": "2.0.0",
+    "ffmpeg-static": "^2.3.0",
+    "ffprobe-static": "^3.0.0",
     "fluent-ffmpeg": "^2.1.2",
     "history": "4.7.2",
     "react": "16.4.1",

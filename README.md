@@ -32,7 +32,7 @@ A tiny ad free video convertor
 
 <div align="center">
 
-<!-- <img src="./internals/img/snapshot.jpg" width="600" /> -->
+<img src="./internals/img/snapshot.png" width="600" />
 
 </div>
 
