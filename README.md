@@ -1,13 +1,13 @@
 <div align="center">
 <br>
-<img src="./internals/img/react.png" width="200" />
+<img src="./internals/img/logo.png" width="200" />
 
 </div>
 
 <br>
 
 <p align="center">
-A handly electron react boiler plate.
+A tiny ad free video convertor
 </p>
 
 <div align="center">
