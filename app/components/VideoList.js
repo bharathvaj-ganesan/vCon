@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import moment from 'moment';
 
 const VIDEO_FORMATS = [
   { value: 'avi', option: 'AVI' },
@@ -33,6 +32,28 @@ const styles = {
   }
 };
 
+const secondsTohhmmss = totalSeconds => {
+  const hours = Math.floor(totalSeconds / 3600);
+  const minutes = Math.floor((totalSeconds - hours * 3600) / 60);
+  let seconds = totalSeconds - hours * 3600 - minutes * 60;
+
+  // round seconds
+  seconds = Math.round(seconds * 100) / 100;
+
+  let result = hours < 10 ? `0${hours}` : hours;
+  result += `:${minutes < 10 ? `0${minutes}` : minutes}`;
+  result += `:${seconds < 10 ? `0${seconds}` : seconds}`;
+  return result;
+};
+
+const hhmmssToSeconds = timemark => {
+  const [hours, minutes, seconds] = timemark.split(':');
+  let totalSeconds = parseInt(seconds);
+  totalSeconds += minutes * 60;
+  totalSeconds += hours * 3600;
+  return totalSeconds;
+};
+
 export default class VideoList extends Component {
   bytesToSize = bytes => {
     const sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB'];
@@ -41,44 +62,65 @@ export default class VideoList extends Component {
     return `${Math.round(bytes / Math.pow(1024, i), 2)} ${sizes[i]}`;
   };
 
-  showStatus = ({ complete, timemark, outputPath, err }) => {
-    if (complete) {
+  showStatus = ({ converted, outputPath, videoPath }) => {
+    if (converted) {
       return (
         <button
-          onClick={() => this.props.onFolderOpen(outputPath)}
+          onClick={() => this.props.onFolderOpen(outputPath, videoPath)}
           className="btn"
         >
           Open Folder
         </button>
       );
     }
-    if (err) {
-      return <p className="red-text">{err}</p>;
-    }
+    // if (err) {
+    //   return <p className="red-text">{err}</p>;
+    // }
     return '';
+  };
+
+  renderProgressBar = ({ duration, timemark, converted }) => {
+    if (timemark) {
+      return `${100 - (hhmmssToSeconds(timemark) * 1000) / (duration * 10)}%`;
+    }
+    if (converted) {
+      return '0%';
+    }
+    return '100%';
   };
 
   renderVideos = () => {
     const { videos } = this.props;
-
     return videos.map((video, index) => {
-      const { name, path, size, format } = video;
+      const {
+        name,
+        path,
+        size,
+        format,
+        duration,
+        converted,
+        outputPath
+      } = video;
+
       return (
         <li className="collection-item" key={path}>
           <span className="grey-text">{`${index + 1}.`}</span>
-          {/* <div
-          style={{
-            ...styles.progressBar,
-            right: this.renderProgressBar(video)
-          }}
-        /> */}
+          <div
+            style={{
+              ...styles.progressBar,
+              right: this.renderProgressBar(video)
+            }}
+          />
           <div style={styles.fileName}>
             <p className="truncate">{name}</p>
             <h6 className="grey-text">{this.bytesToSize(size)}</h6>
+            <p>
+              <i className="grey-text">{secondsTohhmmss(duration)}</i>
+            </p>
           </div>
           <div className="secondary-content" style={styles.secondaryContent}>
             <select
-              className="browser-default right"
+              className={converted ? 'hidden' : 'browser-default right'}
               value={format}
               onChange={e => this.props.onFormatChange(path, e.target.value)}
             >
@@ -96,7 +138,7 @@ export default class VideoList extends Component {
             >
               delete
             </i>
-            {/* {this.showStatus({ complete, timemark, outputPath, err })} */}
+            {this.showStatus({ converted, outputPath, videoPath: path })}
           </div>
         </li>
       );

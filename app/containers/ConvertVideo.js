@@ -45,5 +45,5 @@ function mapStateToProps(state) {
 
 export default connect(
   mapStateToProps,
-  { removeVideo, removeAllVideos, showInFolder, setFormat }
+  { removeVideo, removeAllVideos, showInFolder, setFormat, convertVideos }
 )(ConvertVideo);

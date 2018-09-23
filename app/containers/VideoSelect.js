@@ -13,7 +13,9 @@ class VideoSelect extends Component {
         size,
         format: type.split('/')[1],
         converted: false,
-        duration: 0
+        duration: 0,
+        timemark: 0,
+        outputPath: ''
       };
     });
     console.log(filesSanitized);

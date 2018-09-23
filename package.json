@@ -199,7 +199,6 @@
     "electron-debug": "2.0.0",
     "fluent-ffmpeg": "^2.1.2",
     "history": "4.7.2",
-    "moment": "2.22.2",
     "react": "16.4.1",
     "react-dom": "16.4.1",
     "react-dropzone": "5.1.0",

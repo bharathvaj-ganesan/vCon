@@ -18,18 +18,36 @@ export default function(state = INITIAL_STATE, action) {
       return state.filter(video => video.path !== action.payload);
     case REMOVE_ALL_VIDEOS:
       return INITIAL_STATE;
+    case VIDEO_PROGRESS:
+      return state.map(video => {
+        const { timemark, videoPath } = action.payload;
+        if (video.path === videoPath) {
+          return {
+            ...video,
+            timemark
+          };
+        }
+        return video;
+      });
     case VIDEO_COMPLETE:
-      return state.map(video => ({
-        ...video,
-        completed: true
-      }));
+      return state.map(video => {
+        const { videoPath, outputPath } = action.payload;
+        if (video.path === videoPath) {
+          video.converted = true;
+          video.outputPath = outputPath;
+        }
+        return {
+          ...video
+        };
+      });
     case SET_FORMAT:
       return state.map(video => {
         const { format, videoPath } = action.payload;
         if (video.path === videoPath) {
           return {
             ...video,
-            format
+            format,
+            converted: false
           };
         }
         return video;

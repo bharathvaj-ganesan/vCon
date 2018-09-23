@@ -113,3 +113,27 @@ ipcMain.on('videos:added', (event, videos) => {
 ipcMain.on('folder:open', (event, outputPath) => {
   shell.showItemInFolder(outputPath);
 });
+
+ipcMain.on('conversion:start', (event, videos) => {
+  videos.forEach(video => {
+    const outputDirectory = video.path.split(video.name)[0];
+    const outputName = video.name.split('.')[0];
+    const outputPath = `${outputDirectory}${outputName}.${video.format}`;
+
+    ffmpeg(video.path)
+      .output(outputPath)
+      .on('progress', ({ timemark }) =>
+        mainWindow.webContents.send('conversion:progress', {
+          videoPath: video.path,
+          timemark
+        })
+      )
+      .on('end', () => {
+        mainWindow.webContents.send('conversion:end', {
+          videoPath: video.path,
+          outputPath
+        });
+      });
+    on('error', () => {}).run();
+  });
+});
