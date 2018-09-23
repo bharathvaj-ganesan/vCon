@@ -1,6 +1,6 @@
 {
-  "name": "electronapp",
-  "productName": "electronapp",
+  "name": "vcon",
+  "productName": "vCon",
   "version": "1.0.0",
   "description": "A handy image editor powered by electron.",
   "scripts": {
@@ -38,8 +38,8 @@
     ]
   },
   "build": {
-    "productName": "electronapp",
-    "appId": "com.bharath.electronapp",
+    "productName": "vcon",
+    "appId": "com.bharath.vcon",
     "files": [
       "dist/",
       "node_modules/",
@@ -94,13 +94,11 @@
   },
   "keywords": [
     "electron",
-    "boilerplate",
     "react",
     "redux",
-    "sass",
-    "webpack",
-    "hot",
-    "reload"
+    "ffmpeg",
+    "video",
+    "convertor"
   ],
   "homepage": "https://github.com/chentsulin/electron-react-boilerplate#readme",
   "jest": {
