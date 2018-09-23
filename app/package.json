@@ -1,0 +1,18 @@
+{
+  "name": "electronapp",
+  "productName": "electronapp",
+  "version": "1.1.3",
+  "description": "A handy image editor powered by electron.",
+  "main": "./main.prod.js",
+  "author": {
+    "name": "Bharathvaj Ganesan",
+    "email": "bharathvaj1995@gmail.com",
+    "url": "https://bharathvajganesan.me"
+  },
+  "scripts": {
+    "electron-rebuild": "node -r babel-register ../internals/scripts/ElectronRebuild.js",
+    "postinstall": "yarn electron-rebuild"
+  },
+  "license": "MIT",
+  "dependencies": {}
+}

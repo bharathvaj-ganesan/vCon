@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <title>Electron APP</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.98.1/css/materialize.min.css">
+  <link href="http://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
+  <style>
+    .video-select-screen h4,
+    .video-select-screen-small h4 {
+      text-align: center;
+    }
+
+    .video-list .collection-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: relative;
+      border-bottom: 1px solid #e0e0e0 !important;
+    }
+
+    .convert-panel {
+      display: flex;
+      justify-content: space-between;
+    }
+
+    .video-list {
+      height: 50vh;
+      overflow: scroll;
+    }
+
+    .video-list .collection-item .btn {
+      margin-left: 10px;
+    }
+
+    .hovering {
+      border: 3px dashed black !important;
+    }
+
+    .dropzone {
+      width: 100%;
+      height: 15rem;
+      border-width: 2px;
+      border-color: rgb(102, 102, 102);
+      border-style: dashed;
+      border-radius: 5px;
+      display: flex;
+      justify-content: center;
+    }
+
+    .dropzone-active {
+      border-style: solid;
+      background-color: #66bb6a
+    }
+
+    .dropzone-reject {
+      border-style: solid;
+      background-color: #e57373;
+    }
+
+    .video-select-screen {
+      height: 90vh;
+      width: 90vw;
+      margin: 5vh auto;
+    }
+
+    .video-select-screen-small {
+      height: 25vh;
+      margin: 5vh 0;
+    }
+
+    .container {
+      display: flex;
+      flex-direction: column;
+      height: 95vh;
+    }
+
+    .drop-message {
+      display: flex;
+      align-self: center;
+      width: 50%;
+    }
+  </style>
+  <script>
+    (function () {
+      if (!process.env.HOT) {
+        const link = document.createElement('link');
+        link.rel = 'stylesheet';
+        link.href = './dist/style.css';
+        // HACK: Writing the script path should be done with webpack
+        document.getElementsByTagName('head')[0].appendChild(link);
+      }
+    }());
+  </script>
+</head>
+
+<body>
+  <div id="root"></div>
+  <script>
+    {
+      const scripts = [];
+
+      // Dynamically insert the DLL script in development env in the
+      // renderer process
+      if (process.env.NODE_ENV === 'development') {
+        scripts.push('../dll/renderer.dev.dll.js');
+      }
+
+      // Dynamically insert the bundled app script in the renderer process
+      const port = process.env.PORT || 1212;
+      scripts.push(
+        (process.env.HOT)
+          ? 'http://localhost:' + port + '/dist/renderer.dev.js'
+          : './dist/renderer.prod.js'
+      );
+
+      document.write(
+        scripts
+          .map(script => `<script defer src="${script}"><\/script>`)
+          .join('')
+      );
+    }
+  </script>
+</body>
+
+</html>
